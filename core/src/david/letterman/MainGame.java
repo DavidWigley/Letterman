@@ -17,6 +17,10 @@ public class MainGame extends ApplicationAdapter {
 	}
 
 	@Override
+	/*
+	 *  Method called by the game loop from the application every time rendering should be performed.
+	 *  Game logic updates are usually also performed in this method.
+	 */
 	public void render () {
 		Gdx.gl.glClearColor(1, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -24,4 +28,21 @@ public class MainGame extends ApplicationAdapter {
 		batch.draw(img, 0, 0);
 		batch.end();
 	}
+	public void resize (int width, int height) {
+	}
+
+	/*
+	 * On Android this method is called when the Home button is pressed or an incoming call is received.
+	 * On desktop this is called just before dispose() when exiting the application.
+	 * A good place to save the game state.
+	 */
+	public void pause () {
+	}
+
+	public void resume () {
+	}
+
+	public void dispose () {
+	}
+
 }
