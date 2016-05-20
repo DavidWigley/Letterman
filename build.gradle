@@ -1,10 +1,14 @@
 buildscript {
+    //defines the repositories that are required by this script, e.g. android plugin
     repositories {
         mavenLocal()
+        //maven central repository, needed for the android plugin
         mavenCentral()
+        //repository for the libgdx artifacts
         maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
     }
     dependencies {
+        //adds the android gradle plugin as a dependency of this buildscript
         classpath 'com.android.tools.build:gradle:2.1.0'
     }
 }
@@ -24,6 +28,7 @@ allprojects {
     }
 
     repositories {
+        //defines all repositories needed for all projects
         mavenLocal()
         mavenCentral()
         maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
@@ -37,6 +42,9 @@ project(":android") {
     configurations { natives }
 
     dependencies {
+        //defines dependencies for the :android project, depends on the :core project,
+        //and all the android backends and all platform natives, Note the 'natives' classifier
+        //in this project
         compile project(":core")
         compile "com.badlogicgames.gdx:gdx-backend-android:$gdxVersion"
         natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-armeabi"
@@ -50,6 +58,8 @@ project(":android") {
         natives "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-arm64-v8a"
         natives "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-x86"
         natives "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-x86_64"
+
+        compile fileTree(dir: 'libs', include: '*.jar')
     }
 }
 
@@ -58,8 +68,10 @@ project(":core") {
 
 
     dependencies {
+        //defines the dependencies for the :core project, in this example the gdx dependency
         compile "com.badlogicgames.gdx:gdx:$gdxVersion"
         compile "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
+        compile fileTree(dir: 'libs', include: '*.jar')
     }
 }
 
