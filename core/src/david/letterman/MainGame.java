@@ -28,6 +28,9 @@ public class MainGame extends ApplicationAdapter {
 		batch.draw(img, 0, 0);
 		batch.end();
 		//ed hall comment
+		//ed hall desktop comment test
+		//ed hall is a huge pussy
+		//kek
 	}
 	public void resize (int width, int height) {
 	}
