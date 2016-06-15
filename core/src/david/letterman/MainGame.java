@@ -2,18 +2,53 @@ package david.letterman;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector3;
 
 public class MainGame extends ApplicationAdapter {
+
 	SpriteBatch batch;
-	Texture img;
-	
+	//texture of our man
+	private Texture manText;
+	//music for test purposes
+	private Music testMusic;
+	//rectangle object for our man texture, may have to change in future
+	private Rectangle man;
+	//Orthographic camera
+	private OrthographicCamera camera;
+
 	@Override
 	public void create () {
+		//set texture for man
+		manText = new Texture(Gdx.files.internal("man.png"));
+
+		//set music
+		//testMusic = Gdx.audio.newMusic("stuff.mp3");
+		//starts playing music on loop
+		//testMusic.setLooping(true);
+		//testMusic.play();
+		//set camera
+		camera = new OrthographicCamera();
+		//800x480 is the resolution of SOME android devices
+		//subject to change if we implement resolution scaling
+		camera.setToOrtho(false, 800, 480);
+
+		//set man, he is centered as of right now and his height and width
+		//are arbitrary and subject to change
+		man = new Rectangle();
+		man.x = 400;
+		man.y = 240;
+		man.width = 64;
+		man.height = 64;
+
 		batch = new SpriteBatch();
-		img = new Texture("badlogic.jpg");
+
 	}
 
 	@Override
@@ -22,15 +57,26 @@ public class MainGame extends ApplicationAdapter {
 	 *  Game logic updates are usually also performed in this method.
 	 */
 	public void render () {
-		Gdx.gl.glClearColor(1, 0, 0, 1);
+		//initializes white background
+		Gdx.gl.glClearColor(1, 1, 1, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+		//updates camera
+		camera.update();
+
+		batch.setProjectionMatrix(camera.combined);
 		batch.begin();
-		batch.draw(img, 0, 0);
+		batch.draw(manText, man.x, man.y);
 		batch.end();
-		//ed hall comment
-		//ed hall desktop comment test
-		//ed hall is a huge pussy
-		//kek
+
+		if(Gdx.input.isTouched()) {
+			Vector3 touchPos = new Vector3();
+			touchPos.set(Gdx.input.getX(), Gdx.input.getY(), 0);
+			camera.unproject(touchPos);
+			man.x = touchPos.x;
+			man.y = touchPos.y;
+		}
+
 	}
 	public void resize (int width, int height) {
 	}
@@ -47,6 +93,8 @@ public class MainGame extends ApplicationAdapter {
 	}
 
 	public void dispose () {
+		manText.dispose();
+		batch.dispose();
 	}
 
 }
