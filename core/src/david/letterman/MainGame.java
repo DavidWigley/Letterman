@@ -8,8 +8,12 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
 public class MainGame extends ApplicationAdapter {
 
@@ -22,6 +26,14 @@ public class MainGame extends ApplicationAdapter {
 	private Rectangle man;
 	//Orthographic camera
 	private OrthographicCamera camera;
+
+	//Dave
+	Stage stage;
+	ImageButton button;
+	Skin skin;
+	TextureAtlas buttonAtlas;
+
+	ImageButton.ImageButtonStyle imageButtonStyle;
 
 	@Override
 	public void create () {
@@ -49,6 +61,17 @@ public class MainGame extends ApplicationAdapter {
 
 		batch = new SpriteBatch();
 
+
+		stage = new Stage();
+		Gdx.input.setInputProcessor(stage);
+		skin = new Skin();
+		buttonAtlas = new TextureAtlas(Gdx.files.internal("buttons/buttons.pack"));
+		skin.addRegions(buttonAtlas);
+		imageButtonStyle = new ImageButton.ImageButtonStyle();
+		imageButtonStyle.up = skin.getDrawable("blueButton");
+		imageButtonStyle.down = skin.getDrawable("greenButton");
+		button = new ImageButton(imageButtonStyle);
+		stage.addActor(button);
 	}
 
 	@Override
@@ -57,6 +80,8 @@ public class MainGame extends ApplicationAdapter {
 	 *  Game logic updates are usually also performed in this method.
 	 */
 	public void render () {
+		super.render();
+		stage.draw();
 		//initializes white background
 		Gdx.gl.glClearColor(1, 1, 1, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
